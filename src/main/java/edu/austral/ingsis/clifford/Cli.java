@@ -1,3 +1,4 @@
 package edu.austral.ingsis.clifford;
 
-public interface FileSystem {}
+public class Cli {
+}
