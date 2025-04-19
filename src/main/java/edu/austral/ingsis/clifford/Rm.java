@@ -1,5 +1,7 @@
 package edu.austral.ingsis.clifford;
 
+import java.util.Optional;
+
 public class Rm implements FileSystemOperation<String> {
 
   String name;
@@ -17,27 +19,20 @@ public class Rm implements FileSystemOperation<String> {
     }
 
     Directory dir = (Directory) currentDirectory;
-    FileSystemComponent toRemove = null;
+    Optional<FileSystemComponent> toRemove =
+        dir.getChildren().stream().filter(child -> child.getName().equals(name)).findFirst();
 
-    for (FileSystemComponent child : dir.getChildren()) {
-      if (child.getName().equals(name)) {
-        toRemove = child;
-        break;
-      }
-    }
-
-    if (toRemove == null) {
+    if (!toRemove.isPresent()) {
       return "Element not found: " + name;
     }
 
-    if (toRemove.isDirectory()) {
-      Directory dirToRemove = (Directory) toRemove;
-      if (!recursive && !dirToRemove.getChildren().isEmpty()) {
-        return "Cannot remove non-empty directory without --recursive flag";
-      }
+    FileSystemComponent target = toRemove.get();
+
+    if (target.isDirectory() && !recursive) {
+      return "cannot remove '" + name + "', is a directory";
     }
 
-    dir.removeChild(toRemove);
-    return ("'" + name + "' removed");
+    dir.removeChild(target);
+    return "'" + name + "' removed";
   }
 }

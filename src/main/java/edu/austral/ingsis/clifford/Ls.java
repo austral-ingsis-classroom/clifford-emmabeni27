@@ -1,5 +1,6 @@
 package edu.austral.ingsis.clifford;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,22 +17,21 @@ public class Ls implements FileSystemOperation<String> {
     if (!currentDirectory.isDirectory()) {
       return "Current node is not a directory. Cannot list content.";
     }
+
     Directory directory = (Directory) currentDirectory;
-    List<FileSystemComponent> children = directory.getChildren();
+    List<String> names =
+        directory.getChildren().stream()
+            .map(FileSystemComponent::getName)
+            .collect(Collectors.toList());
 
-    if (children.isEmpty()) {
-      return "";
+    // Solo ordenamos si se especifica --ord (asc/desc)
+    if ("asc".equals(order)) {
+      names.sort(String::compareTo);
+    } else if ("desc".equals(order)) {
+      names.sort(Comparator.reverseOrder());
     }
+    // Si order es "none" o cualquier otro valor, no se ordena
 
-    if (order.equals("asc")) {
-      children.sort((a, b) -> a.getName().compareTo(b.getName()));
-    } else if (order.equals("desc")) {
-      children.sort((a, b) -> b.getName().compareTo(a.getName()));
-    }
-    //si hago un for para iterar sobre nodos con un return, corta en el primer return y no devuelve el resto :(
-    return children.stream()
-      .map(FileSystemComponent::getName)
-      .collect(Collectors.joining(" "));
+    return String.join(" ", names);
   }
 }
-

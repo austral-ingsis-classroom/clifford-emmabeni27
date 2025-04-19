@@ -17,7 +17,7 @@ public class Cd implements FileSystemOperation<String> {
     FileSystemComponent target = ResolvePath.resolvePath(moveTo, currentDirectory);
 
     if (target == null || !target.isDirectory()) {
-      return "'"+moveTo+"' " + "directory does not exist";
+      return "'" + moveTo + "' " + "directory does not exist";
     }
 
     return "moved to directory '" + target.getName() + "'";

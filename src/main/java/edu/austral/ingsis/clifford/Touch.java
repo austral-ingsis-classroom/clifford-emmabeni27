@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford;
 
-public class Touch implements FileSystemOperation<String>{
+public class Touch implements FileSystemOperation<String> {
   String name;
 
   public Touch(String name) {

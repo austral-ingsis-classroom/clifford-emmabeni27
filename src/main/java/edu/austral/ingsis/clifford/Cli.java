@@ -91,8 +91,19 @@ public class Cli {
       return "File/Directory name required";
     }
 
-    String name = parts[1];
     boolean recursive = Arrays.asList(parts).contains("--recursive");
+
+    // busco el argumento que NO es --recursive asumiendo que es el nombre que me interesa
+    String name =
+        Arrays.stream(parts)
+            .filter(part -> !part.equals("--recursive") && !part.equals("rm"))
+            .findFirst()
+            .orElse(null);
+
+    if (name == null) {
+      return "File/Directory name required";
+    }
+
     FileSystemOperation<String> rmOperation = new Rm(name, recursive);
     return rmOperation.execute(currentDirectory);
   }

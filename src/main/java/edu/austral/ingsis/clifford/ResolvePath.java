@@ -4,9 +4,16 @@ import java.util.Optional;
 
 public class ResolvePath {
 
-  static FileSystemComponent resolvePath(String path, FileSystemComponent current) {
+  public static FileSystemComponent resolvePath(String path, FileSystemComponent current) {
     if (path.equals(".")) return current;
     if (path.equals("..")) return current.getParent() != null ? current.getParent() : current;
+
+    if (path.equals("/")) {
+      while (current.getParent() != null) {
+        current = current.getParent();
+      }
+      return current;
+    }
 
     // ruta absoluta
     if (path.startsWith("/")) {
@@ -15,6 +22,8 @@ public class ResolvePath {
       }
       path = path.substring(1);
     }
+
+    if (path.isEmpty()) return current;
 
     String[] parts = path.split("/");
     FileSystemComponent node = current;
@@ -32,3 +41,5 @@ public class ResolvePath {
     return node;
   }
 }
+// al hacer cd /, el reolvePath eliminaba / y quedaba una cadena vacia.
+// Depues buscaba un subdirectorio de nombre vacio en root (que no existe) y rompia codigo
