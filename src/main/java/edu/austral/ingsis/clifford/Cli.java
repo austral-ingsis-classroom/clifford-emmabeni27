@@ -1,108 +1,104 @@
 package edu.austral.ingsis.clifford;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class Cli {
 
   private FileSystemComponent currentDirectory;
 
   public Cli(FileSystemComponent rootDirectory) {
-    this.currentDirectory = rootDirectory;  // Iniciamos con el directorio raíz
+    this.currentDirectory = rootDirectory;
   }
 
-  public void executeCommand(String command) {
-    String[] parts = command.split(" ");  // Separar por espacios
-    String operation = parts[0];  // El primer parámetro es el nombre de la operación
+  public String executeCommand(String command) {
+    String[] parts = command.split(" ");
+    String operation = parts[0];
 
-    switch (operation) {
-      case "ls":
-        handleLs(parts);
-        break;
-
-      case "cd":
-        handleCd(parts);
-        break;
-
-      case "touch":
-        handleTouch(parts);
-        break;
-
-      case "mkdir":
-        handleMkdir(parts);
-        break;
-
-      case "rm":
-        handleRm(parts);
-        break;
-
-      case "pwd":
-        handlePwd();
-        break;
-
-      default:
-        System.out.println("Unknown command: " + operation);
-        break;
+    try {
+      switch (operation) {
+        case "ls":
+          return handleLs(parts);
+        case "cd":
+          return handleCd(parts);
+        case "touch":
+          return handleTouch(parts);
+        case "mkdir":
+          return handleMkdir(parts);
+        case "rm":
+          return handleRm(parts);
+        case "pwd":
+          return handlePwd();
+        default:
+          return "Unknown command: " + operation;
+      }
+    } catch (RuntimeException e) {
+      return e.getMessage();
     }
   }
 
-  private void handleLs(String[] parts) {
-    String order = "none";  // Valor por defecto
+  private String handleLs(String[] parts) {
+    String order = "none";
     if (parts.length > 1 && parts[1].startsWith("--ord")) {
-      order = parts[1].split("=")[1];  // Obtiene "asc" o "desc"
+      order = parts[1].split("=")[1];
     }
 
-    FileSystemOperation lsOperation = new Ls(order);
-    lsOperation.execute(currentDirectory);
+    FileSystemOperation<String> lsOperation = new Ls(order);
+    return lsOperation.execute(currentDirectory);
   }
 
-  private void handleCd(String[] parts) {
+  private String handleCd(String[] parts) {
     if (parts.length < 2) {
-      System.out.println("Directory name required");
-      return;
+      return "Directory name required";
     }
 
     String dirName = parts[1];
-    FileSystemOperation cdOperation = new Cd(dirName);
-    cdOperation.execute(currentDirectory);
+    FileSystemOperation<String> cdOperation = new Cd(dirName);
+    String result = cdOperation.execute(currentDirectory);
+
+    // Si el resultado es exitoso, actualizar el directorio actual
+    if (!result.startsWith("Error") && !result.contains("does not exist")) {
+      FileSystemComponent target = ResolvePath.resolvePath(dirName, currentDirectory);
+      if (target != null) {
+        this.currentDirectory = target;
+      }
+    }
+
+    return result;
   }
 
-  private void handleTouch(String[] parts) {
+  private String handleTouch(String[] parts) {
     if (parts.length < 2) {
-      System.out.println("File name required");
-      return;
+      return "File name required";
     }
 
     String fileName = parts[1];
-    FileSystemOperation touchOperation = new Touch(fileName);
-    touchOperation.execute(currentDirectory);
+    FileSystemOperation<String> touchOperation = new Touch(fileName);
+    return touchOperation.execute(currentDirectory);
   }
 
-  private void handleMkdir(String[] parts) {
+  private String handleMkdir(String[] parts) {
     if (parts.length < 2) {
-      System.out.println("Directory name required");
-      return;
+      return "Directory name required";
     }
 
     String dirName = parts[1];
-    FileSystemOperation mkdirOperation = new Mkdir(dirName);
-    mkdirOperation.execute(currentDirectory);
+    FileSystemOperation<String> mkdirOperation = new Mkdir(dirName);
+    return mkdirOperation.execute(currentDirectory);
   }
 
-  private void handleRm(String[] parts) {
+  private String handleRm(String[] parts) {
     if (parts.length < 2) {
-      System.out.println("File/Directory name required");
-      return;
+      return "File/Directory name required";
     }
 
     String name = parts[1];
-    boolean recursive = Arrays.asList(parts).contains("--recursive");  // Verificar si contiene --recursive
-    FileSystemOperation rmOperation = new Rm(name, recursive);
-    rmOperation.execute(currentDirectory);
+    boolean recursive = Arrays.asList(parts).contains("--recursive");
+    FileSystemOperation<String> rmOperation = new Rm(name, recursive);
+    return rmOperation.execute(currentDirectory);
   }
 
-  private void handlePwd() {
-    FileSystemOperation pwdOperation = new Pwd();
-    pwdOperation.execute(currentDirectory);
+  private String handlePwd() {
+    FileSystemOperation<String> pwdOperation = new Pwd();
+    return pwdOperation.execute(currentDirectory);
   }
 }

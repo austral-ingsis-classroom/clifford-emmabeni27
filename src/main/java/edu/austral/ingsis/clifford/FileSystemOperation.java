@@ -1,7 +1,8 @@
 package edu.austral.ingsis.clifford;
 
-public interface FileSystemOperation {
+public interface FileSystemOperation<
+    T> { // uso generics as[i el putput se adapta a la necesidad de cada operacio[n
 
   // Ejecución del comando
-  void execute(FileSystemComponent currentDirectory);
+  T execute(FileSystemComponent currentDirectory);
 }

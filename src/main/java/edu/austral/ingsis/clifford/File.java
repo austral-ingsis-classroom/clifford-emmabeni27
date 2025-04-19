@@ -2,7 +2,7 @@ package edu.austral.ingsis.clifford;
 
 import java.util.Objects;
 
-public class File implements FileSystemComponent{
+public class File implements FileSystemComponent {
   String name;
   String type;
   FileSystemComponent parent;
@@ -12,7 +12,8 @@ public class File implements FileSystemComponent{
     this.type = type;
     this.parent = parent;
   }
-  //no necesito el actualDir, lo puedo reconstruir con get parent
+
+  // no necesito el actualDir, lo puedo reconstruir con get parent
 
   @Override
   public String getName() {
@@ -39,4 +40,3 @@ public class File implements FileSystemComponent{
     return Objects.equals(type, "Directory");
   }
 }
-

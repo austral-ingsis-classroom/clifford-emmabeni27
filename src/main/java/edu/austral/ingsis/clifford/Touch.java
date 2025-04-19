@@ -1,25 +1,25 @@
 package edu.austral.ingsis.clifford;
 
-public class Touch implements FileSystemOperation{
+public class Touch implements FileSystemOperation<String>{
   String name;
 
-  public Touch(String name){
-    this.name=name;
+  public Touch(String name) {
+    this.name = name;
   }
 
   @Override
-  public void execute(FileSystemComponent currentDirectory) {
+  public String execute(FileSystemComponent currentDirectory) {
 
-    if(!currentDirectory.isDirectory()){
-      throw new RuntimeException("Not a directory");
+    if (!currentDirectory.isDirectory()) {
+      return "Not a directory";
     }
-    for(char c : name.toCharArray()){
-      if (c == ' ' || c == '/'){
-        throw new IllegalArgumentException("File name can contain neither ' ' nor /");
+    for (char c : name.toCharArray()) {
+      if (c == ' ' || c == '/') {
+        return "File name can contain neither ' ' nor /";
       }
     }
     FileSystemComponent newFile = new File(name, "File", currentDirectory);
     ((Directory) currentDirectory).addChild(newFile);
-    System.out.println("'" + name + "' file created");
+    return ("'" + name + "' file created");
   }
 }

@@ -1,27 +1,25 @@
 package edu.austral.ingsis.clifford;
 
-public class Cd implements FileSystemOperation{
+public class Cd implements FileSystemOperation<String> {
 
   String moveTo;
 
-  public Cd(String moveTo){
+  public Cd(String moveTo) {
     this.moveTo = moveTo;
   }
 
   @Override
-  public void execute(FileSystemComponent currentDirectory) {
+  public String execute(FileSystemComponent currentDirectory) {
 
     if (!currentDirectory.isDirectory()) {
-      throw new RuntimeException("Not a directory");
+      return "Not a directory";
     }
     FileSystemComponent target = ResolvePath.resolvePath(moveTo, currentDirectory);
 
     if (target == null || !target.isDirectory()) {
-      throw new RuntimeException("Directory not found: " + moveTo);
+      return "'"+moveTo+"' " + "directory does not exist";
     }
 
-    System.out.println("Moved to directory: '" + target.getName() + "'");
+    return "moved to directory '" + target.getName() + "'";
   }
-
-  }
-
+}

@@ -1,11 +1,13 @@
 package edu.austral.ingsis.clifford;
 
 public interface FileSystemComponent {
-    String getName();
-    String getType(); // "file" o "directory"
+  String getName();
 
-    void setParent(FileSystemComponent parent);
-    FileSystemComponent getParent();
+  String getType(); // "file" o "directory"
 
-    boolean isDirectory();
+  void setParent(FileSystemComponent parent);
+
+  FileSystemComponent getParent();
+
+  boolean isDirectory();
 }

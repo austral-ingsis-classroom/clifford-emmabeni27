@@ -11,7 +11,8 @@ public class Directory implements FileSystemComponent {
   FileSystemComponent parent;
   private List<FileSystemComponent> children = new ArrayList<>();
 
-  public Directory(String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
+  public Directory(
+      String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
     this.name = name;
     this.type = type;
     this.parent = parent;
@@ -40,7 +41,7 @@ public class Directory implements FileSystemComponent {
 
   @Override
   public boolean isDirectory() {
-    return  Objects.equals(type, "Directory");
+    return Objects.equals(type, "Directory");
   }
 
   public void addChild(FileSystemComponent child) {
@@ -55,5 +56,4 @@ public class Directory implements FileSystemComponent {
   public List<FileSystemComponent> getChildren() {
     return new ArrayList<>(children);
   }
-
 }

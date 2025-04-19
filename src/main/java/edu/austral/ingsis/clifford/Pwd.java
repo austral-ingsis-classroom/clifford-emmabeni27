@@ -1,19 +1,17 @@
 package edu.austral.ingsis.clifford;
 
-public class Pwd implements FileSystemOperation {
+public class Pwd implements FileSystemOperation<String> {
   @Override
-  public void execute(FileSystemComponent currentDirectory) {
+  public String execute(FileSystemComponent currentDirectory) {
     StringBuilder path = new StringBuilder();
 
     FileSystemComponent dir = currentDirectory;
-
 
     while (dir.getParent() != null) {
       path.insert(0, "/" + dir.getName());
       dir = dir.getParent();
     }
 
-
-    System.out.println(path.toString());
+    return path.toString();
   }
 }
