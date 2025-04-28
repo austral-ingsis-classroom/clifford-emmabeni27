@@ -180,7 +180,7 @@ public class RandomTest {
     Mkdir mkdir = new Mkdir("bad name");
 
     IllegalArgumentException ex =
-      assertThrows(IllegalArgumentException.class, () -> mkdir.execute(root));
+        assertThrows(IllegalArgumentException.class, () -> mkdir.execute(root));
     assertEquals("Directory name can contain neither ' ' nor /", ex.getMessage());
   }
 
@@ -190,7 +190,7 @@ public class RandomTest {
     Mkdir mkdir = new Mkdir("bad/name");
 
     IllegalArgumentException ex =
-      assertThrows(IllegalArgumentException.class, () -> mkdir.execute(root));
+        assertThrows(IllegalArgumentException.class, () -> mkdir.execute(root));
     assertEquals("Directory name can contain neither ' ' nor /", ex.getMessage());
   }
 

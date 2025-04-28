@@ -2,7 +2,6 @@ package edu.austral.ingsis.clifford;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Directory implements FileSystemComponent {
 
@@ -33,7 +32,6 @@ public class Directory implements FileSystemComponent {
   public void setParent(FileSystemComponent newParent) {
     parent = newParent;
   }
-
 
   @Override
   public FileSystemComponent getParent() {

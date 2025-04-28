@@ -11,5 +11,3 @@ public interface FileSystemComponent {
 
   boolean isDirectory();
 }
-
-
