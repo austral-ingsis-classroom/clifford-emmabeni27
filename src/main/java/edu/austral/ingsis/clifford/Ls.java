@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Ls implements FileSystemOperation<String> {
+public class Ls implements FileSystemOperation<String>, CommandFactory {
 
   public String order;
 
@@ -24,7 +24,7 @@ public class Ls implements FileSystemOperation<String> {
             .map(FileSystemComponent::getName)
             .collect(Collectors.toList());
 
-    // Solo ordenamos si se especifica --ord (asc/desc)
+    // Solo ordeno si se especifica --ord (asc/desc)
     if ("asc".equals(order)) {
       names.sort(String::compareTo);
     } else if ("desc".equals(order)) {
@@ -33,5 +33,19 @@ public class Ls implements FileSystemOperation<String> {
     // Si order es "none" o cualquier otro valor, no se ordena
 
     return String.join(" ", names);
+  }
+
+  @Override
+  public String commandName() {
+    return "ls"; // Nombre del comando
+  }
+
+  @Override
+  public FileSystemOperation<String> fromParts(String[] parts) {
+    String order = "none";
+    if (parts.length > 1 && parts[1].startsWith("--ord")) {
+      order = parts[1].split("=")[1]; // Extraemos el valor después de --ord
+    }
+    return new Ls(order); // Creamos una nueva instancia de Ls con el parámetro `order`
   }
 }

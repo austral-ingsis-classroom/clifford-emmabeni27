@@ -2,10 +2,12 @@ package edu.austral.ingsis.clifford;
 
 import java.util.Objects;
 
-public class File implements FileSystemComponent {
-  String name;
-  String type;
-  FileSystemComponent parent;
+public final class File implements FileSystemComponent {
+
+  private final String name;
+  private FileSystemComponent parent;
+  final String type;
+
 
   public File(String name, String type, FileSystemComponent parent) {
     this.name = name;
@@ -40,3 +42,10 @@ public class File implements FileSystemComponent {
     return Objects.equals(type, "Directory");
   }
 }
+
+
+
+
+
+
+

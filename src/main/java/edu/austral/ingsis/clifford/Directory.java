@@ -34,6 +34,7 @@ public class Directory implements FileSystemComponent {
     parent = newParent;
   }
 
+
   @Override
   public FileSystemComponent getParent() {
     return parent;
@@ -41,7 +42,7 @@ public class Directory implements FileSystemComponent {
 
   @Override
   public boolean isDirectory() {
-    return Objects.equals(type, "Directory");
+    return true;
   }
 
   public void addChild(FileSystemComponent child) {

@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford;
 
-public class Pwd implements FileSystemOperation<String> {
+public class Pwd implements FileSystemOperation<String>, CommandFactory {
   @Override
   public String execute(FileSystemComponent currentDirectory) {
     StringBuilder path = new StringBuilder();
@@ -14,4 +14,15 @@ public class Pwd implements FileSystemOperation<String> {
 
     return path.toString();
   }
+
+  @Override
+  public String commandName() {
+    return "pwd";
+  }
+
+  @Override
+  public FileSystemOperation<String> fromParts(String[] parts) {
+    return new Pwd();
+  }
 }
+// imprime la ruta

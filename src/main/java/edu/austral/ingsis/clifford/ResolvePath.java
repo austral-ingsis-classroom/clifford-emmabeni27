@@ -43,3 +43,5 @@ public class ResolvePath {
 }
 // al hacer cd /, el reolvePath eliminaba / y quedaba una cadena vacia.
 // Depues buscaba un subdirectorio de nombre vacio en root (que no existe) y rompia codigo
+// interpreta rutas
+// comando . .. /

@@ -6,3 +6,6 @@ public interface FileSystemOperation<
   // Ejecución del comando
   T execute(FileSystemComponent currentDirectory);
 }
+// adt para result
+// cli
+

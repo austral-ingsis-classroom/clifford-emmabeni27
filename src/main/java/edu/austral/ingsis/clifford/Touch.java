@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford;
 
-public class Touch implements FileSystemOperation<String> {
+public class Touch implements FileSystemOperation<String>, CommandFactory {
   String name;
 
   public Touch(String name) {
@@ -21,5 +21,20 @@ public class Touch implements FileSystemOperation<String> {
     FileSystemComponent newFile = new File(name, "File", currentDirectory);
     ((Directory) currentDirectory).addChild(newFile);
     return ("'" + name + "' file created");
+  }
+
+  @Override
+  public String commandName() {
+    return "touch";
+  }
+
+  @Override
+  public FileSystemOperation<String> fromParts(String[] parts) {
+    if (parts.length < 2) {
+      throw new IllegalArgumentException("File name required for 'touch' command");
+    }
+
+    String fileName = parts[1];
+    return new Touch(fileName);
   }
 }

@@ -8,13 +8,18 @@ public class FileSystemRunnerClass implements FileSystemRunner {
 
   @Override
   public List<String> executeCommands(List<String> commands) {
-    // creo sistema de archivos con raiz
+    // Creamos el directorio raíz inmutable
     Directory rootDirectory = new Directory("/", "Directory", null, new ArrayList<>());
-    Cli cli = new Cli(rootDirectory);
+
+    // Cargamos las fábricas dinámicamente
+    List<CommandFactory> factories = CommandFactoryLoader.load();
+
+    // Creamos el CLI, pasándole el directorio raíz y las fábricas
+    Cli cli = new Cli(rootDirectory, factories);
 
     List<String> results = new ArrayList<>();
 
-    // ejecuto cada comando y guardo el resultado
+    // Ejecutamos cada comando y guardamos el resultado
     for (String command : commands) {
       String result = cli.executeCommand(command);
       results.add(result);
