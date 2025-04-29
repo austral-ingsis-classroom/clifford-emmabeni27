@@ -9,22 +9,22 @@ public final class Cd implements FileSystemOperation<String>, CommandFactory {
   }
 
   @Override
-  public String execute(FileSystemComponent currentDirectory) {
+  public Result execute(FileSystemComponent currentDirectory) {
     if (!currentDirectory.isDirectory()) {
-      return "Not a directory";
+      return new Error("Not a directory");
     }
 
     FileSystemComponent target = ResolvePath.resolvePath(moveTo, currentDirectory);
 
     if (target == null) {
-      return "'" + moveTo + "' directory does not exist";
+      return new Error("'" + moveTo + "' directory does not exist");
     }
 
     if (!target.isDirectory()) {
-      return "'" + moveTo + "' is not a directory";
+      return new Error("'" + moveTo + "' is not a directory");
     }
 
-    return "moved to directory '" + target.getName() + "'";
+    return new Success("moved to directory '" + target.getName() + "'");
   }
 
   @Override
@@ -35,7 +35,7 @@ public final class Cd implements FileSystemOperation<String>, CommandFactory {
   @Override
   public FileSystemOperation<String> fromParts(String[] parts) {
     if (parts.length < 2) {
-      throw new IllegalArgumentException("Directory name required for 'cd' command");
+      return new ErrorOperation("Directory name required for 'cd' command");
     }
 
     String dirName = parts[1];

@@ -12,7 +12,7 @@ public final class Directory implements FileSystemComponent {
   private final List<FileSystemComponent> children;
 
   public Directory(
-    String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
+      String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
     this.name = name;
     this.type = type;
     this.parent = parent;

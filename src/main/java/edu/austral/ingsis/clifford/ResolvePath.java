@@ -34,8 +34,8 @@ public final class ResolvePath {
     for (String part : parts) {
       if (!(node instanceof Directory)) return null;
       Optional<FileSystemComponent> found =
-        ((Directory) node)
-          .getChildren().stream().filter(child -> child.getName().equals(part)).findFirst();
+          ((Directory) node)
+              .getChildren().stream().filter(child -> child.getName().equals(part)).findFirst();
 
       if (found.isEmpty()) return null;
       node = found.get();

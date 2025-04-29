@@ -14,16 +14,17 @@ public final class Ls implements FileSystemOperation<String>, CommandFactory {
   }
 
   @Override
-  public String execute(FileSystemComponent currentDirectory) {
+  public Result execute(FileSystemComponent currentDirectory) {
     if (!currentDirectory.isDirectory()) {
-      return "Current node is not a directory. Cannot list content.";
+      return new Error("Current node is not a directory. Cannot list content.");
     }
 
     Directory directory = (Directory) currentDirectory;
-    List<String> names = new ArrayList<>(
-      directory.getChildren().stream()
-        .map(FileSystemComponent::getName)
-        .collect(Collectors.toList()));
+    List<String> names =
+        new ArrayList<>(
+            directory.getChildren().stream()
+                .map(FileSystemComponent::getName)
+                .collect(Collectors.toList()));
 
     if ("asc".equals(order)) {
       names.sort(String::compareTo);
@@ -31,7 +32,7 @@ public final class Ls implements FileSystemOperation<String>, CommandFactory {
       names.sort(Comparator.reverseOrder());
     }
 
-    return String.join(" ", names);
+    return new Success(String.join(" ", names));
   }
 
   @Override

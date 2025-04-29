@@ -13,27 +13,27 @@ public final class Rm implements FileSystemOperation<String>, CommandFactory {
   }
 
   @Override
-  public String execute(FileSystemComponent currentDirectory) {
+  public Result execute(FileSystemComponent currentDirectory) {
     if (!currentDirectory.isDirectory()) {
-      return "Current node is not a directory";
+      return new Error("Current node is not a directory");
     }
 
     Directory dir = (Directory) currentDirectory;
     Optional<FileSystemComponent> toRemove =
-      dir.getChildren().stream().filter(child -> child.getName().equals(name)).findFirst();
+        dir.getChildren().stream().filter(child -> child.getName().equals(name)).findFirst();
 
     if (!toRemove.isPresent()) {
-      return "Element not found: " + name;
+      return new Error("Element not found: " + name);
     }
 
     FileSystemComponent target = toRemove.get();
 
     if (target.isDirectory() && !recursive) {
-      return "cannot remove '" + name + "', is a directory";
+      return new Error("cannot remove '" + name + "', is a directory");
     }
 
     dir.removeChild(target);
-    return "'" + name + "' removed";
+    return new Success("'" + name + "' removed");
   }
 
   @Override
@@ -44,7 +44,7 @@ public final class Rm implements FileSystemOperation<String>, CommandFactory {
   @Override
   public FileSystemOperation<String> fromParts(String[] parts) {
     if (parts.length < 2) {
-      throw new IllegalArgumentException("File/Directory name required for 'rm' command");
+      return new ErrorOperation("File/Directory name required for 'rm' command");
     }
 
     boolean recursive = false;
@@ -59,7 +59,7 @@ public final class Rm implements FileSystemOperation<String>, CommandFactory {
     }
 
     if (name == null) {
-      throw new IllegalArgumentException("File/Directory name required for 'rm' command");
+      return new ErrorOperation("File/Directory name required for 'rm' command");
     }
 
     return new Rm(name, recursive);

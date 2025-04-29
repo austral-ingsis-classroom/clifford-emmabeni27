@@ -11,21 +11,21 @@ public final class Mkdir implements FileSystemOperation<String>, CommandFactory 
   }
 
   @Override
-  public String execute(FileSystemComponent currentDirectory) {
+  public Result execute(FileSystemComponent currentDirectory) {
     if (!currentDirectory.isDirectory()) {
-      throw new RuntimeException("Not a directory");
+      return new Error("Not a directory");
     }
 
     for (char c : name.toCharArray()) {
       if (c == ' ' || c == '/') {
-        throw new IllegalArgumentException("Directory name can contain neither ' ' nor /");
+        return new Error("Directory name can contain neither ' ' nor /");
       }
     }
 
     List<FileSystemComponent> children = new ArrayList<>();
     FileSystemComponent newDirectory = new Directory(name, "Directory", currentDirectory, children);
     ((Directory) currentDirectory).addChild(newDirectory);
-    return "'" + name + "' directory created";
+    return new Success("'" + name + "' directory created");
   }
 
   @Override
@@ -36,7 +36,7 @@ public final class Mkdir implements FileSystemOperation<String>, CommandFactory 
   @Override
   public FileSystemOperation<String> fromParts(String[] parts) {
     if (parts.length < 2) {
-      throw new IllegalArgumentException("Directory name required for 'mkdir' command");
+      return new ErrorOperation("Directory name required for 'mkdir' command");
     }
 
     String dirName = parts[1];

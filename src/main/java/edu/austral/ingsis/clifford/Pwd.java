@@ -5,7 +5,7 @@ public final class Pwd implements FileSystemOperation<String>, CommandFactory {
   public Pwd() {}
 
   @Override
-  public String execute(FileSystemComponent currentDirectory) {
+  public Result execute(FileSystemComponent currentDirectory) {
     StringBuilder path = new StringBuilder();
     FileSystemComponent dir = currentDirectory;
 
@@ -14,7 +14,7 @@ public final class Pwd implements FileSystemOperation<String>, CommandFactory {
       dir = dir.getParent();
     }
 
-    return path.toString();
+    return new Success(path.toString());
   }
 
   @Override

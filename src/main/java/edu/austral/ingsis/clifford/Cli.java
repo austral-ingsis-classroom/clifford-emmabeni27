@@ -24,13 +24,15 @@ public final class Cli {
 
     CommandFactory factory = commands.get(operation);
     if (factory == null) {
-      throw new IllegalArgumentException("No result");
+      return new Error("No result").getMessage();
     }
 
     FileSystemOperation<String> operacion = factory.fromParts(parts);
-    String result = operacion.execute(currentDirectory);
+    Result result = operacion.execute(currentDirectory);
 
-    if ("cd".equals(operation) && result.startsWith("moved to directory")) {
+    if ("cd".equals(operation)
+        && result instanceof Success
+        && result.getMessage().startsWith("moved to directory")) {
       String dirName = parts[1];
       FileSystemComponent newDir = ResolvePath.resolvePath(dirName, currentDirectory);
       if (newDir != null && newDir.isDirectory()) {
@@ -38,7 +40,7 @@ public final class Cli {
       }
     }
 
-    return result;
+    return result.getMessage();
   }
 
   // If we need to provide access to the current directory
