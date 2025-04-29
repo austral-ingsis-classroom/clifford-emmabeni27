@@ -2,7 +2,7 @@ package edu.austral.ingsis.clifford;
 
 public final class Pwd implements FileSystemOperation<String>, CommandFactory {
 
-  public Pwd() {} // Constructor explícito
+  public Pwd() {}
 
   @Override
   public String execute(FileSystemComponent currentDirectory) {

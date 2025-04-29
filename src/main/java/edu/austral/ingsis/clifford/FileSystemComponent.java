@@ -3,7 +3,7 @@ package edu.austral.ingsis.clifford;
 public interface FileSystemComponent {
   String getName();
 
-  String getType(); // "file" o "directory"
+  String getType();
 
   void setParent(FileSystemComponent parent);
 

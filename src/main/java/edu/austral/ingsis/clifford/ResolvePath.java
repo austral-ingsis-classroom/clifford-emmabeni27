@@ -2,7 +2,10 @@ package edu.austral.ingsis.clifford;
 
 import java.util.Optional;
 
-public class ResolvePath {
+public final class ResolvePath {
+
+  // Private constructor to prevent instantiation
+  private ResolvePath() {}
 
   public static FileSystemComponent resolvePath(String path, FileSystemComponent current) {
     if (path.equals(".")) return current;
@@ -31,8 +34,8 @@ public class ResolvePath {
     for (String part : parts) {
       if (!(node instanceof Directory)) return null;
       Optional<FileSystemComponent> found =
-          ((Directory) node)
-              .getChildren().stream().filter(child -> child.getName().equals(part)).findFirst();
+        ((Directory) node)
+          .getChildren().stream().filter(child -> child.getName().equals(part)).findFirst();
 
       if (found.isEmpty()) return null;
       node = found.get();
@@ -41,7 +44,3 @@ public class ResolvePath {
     return node;
   }
 }
-// al hacer cd /, el reolvePath eliminaba / y quedaba una cadena vacia.
-// Depues buscaba un subdirectorio de nombre vacio en root (que no existe) y rompia codigo
-// interpreta rutas
-// comando . .. /

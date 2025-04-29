@@ -1,21 +1,22 @@
 package edu.austral.ingsis.clifford;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Directory implements FileSystemComponent {
+public final class Directory implements FileSystemComponent {
 
-  String name;
-  String type;
-  FileSystemComponent parent;
-  private List<FileSystemComponent> children = new ArrayList<>();
+  private final String name;
+  private final String type;
+  private FileSystemComponent parent;
+  private final List<FileSystemComponent> children;
 
   public Directory(
-      String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
+    String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
     this.name = name;
     this.type = type;
     this.parent = parent;
-    this.children = children;
+    this.children = new ArrayList<>(children);
   }
 
   @Override
@@ -30,7 +31,7 @@ public class Directory implements FileSystemComponent {
 
   @Override
   public void setParent(FileSystemComponent newParent) {
-    parent = newParent;
+    this.parent = newParent;
   }
 
   @Override
@@ -45,7 +46,7 @@ public class Directory implements FileSystemComponent {
 
   public void addChild(FileSystemComponent child) {
     children.add(child);
-    child.setParent(this); // el nodo debe tener un parent! se lo asigno en esta linea
+    child.setParent(this);
   }
 
   public void removeChild(FileSystemComponent child) {
@@ -53,6 +54,6 @@ public class Directory implements FileSystemComponent {
   }
 
   public List<FileSystemComponent> getChildren() {
-    return new ArrayList<>(children);
+    return Collections.unmodifiableList(new ArrayList<>(children));
   }
 }

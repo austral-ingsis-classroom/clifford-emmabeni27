@@ -1,10 +1,11 @@
 package edu.austral.ingsis.clifford;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Cli {
+public final class Cli {
 
   private FileSystemComponent currentDirectory;
   private final Map<String, CommandFactory> commands;
@@ -12,8 +13,9 @@ public class Cli {
   public Cli(FileSystemComponent rootDirectory, List<CommandFactory> factories) {
     this.currentDirectory = rootDirectory;
     this.commands =
-        factories.stream()
-            .collect(Collectors.toMap(CommandFactory::commandName, factory -> factory));
+        Collections.unmodifiableMap(
+            factories.stream()
+                .collect(Collectors.toMap(CommandFactory::commandName, factory -> factory)));
   }
 
   public String executeCommand(String command) {
@@ -25,12 +27,10 @@ public class Cli {
       throw new IllegalArgumentException("No result");
     }
 
-    FileSystemOperation operacion = factory.fromParts(parts);
-    String result = (String) operacion.execute(currentDirectory);
+    FileSystemOperation<String> operacion = factory.fromParts(parts);
+    String result = operacion.execute(currentDirectory);
 
-    // Si el comando es cd y fue exitoso, actualiza el directorio actual
     if ("cd".equals(operation) && result.startsWith("moved to directory")) {
-      // Necesitamos resolver la ruta nuevamente para obtener el componente
       String dirName = parts[1];
       FileSystemComponent newDir = ResolvePath.resolvePath(dirName, currentDirectory);
       if (newDir != null && newDir.isDirectory()) {
@@ -40,8 +40,9 @@ public class Cli {
 
     return result;
   }
+
+  // If we need to provide access to the current directory
+  public FileSystemComponent getCurrentDirectory() {
+    return currentDirectory;
+  }
 }
-// recibe comando como string
-// descompone compando
-// segun la funcion, llama a la correspondiente
-// handle: manejos de error

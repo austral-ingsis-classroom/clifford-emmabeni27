@@ -1,12 +1,13 @@
 package edu.austral.ingsis.clifford;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class Ls implements FileSystemOperation<String>, CommandFactory {
 
-  private final String order; // Campo final
+  private final String order;
 
   public Ls(String order) {
     this.order = order;
@@ -19,10 +20,10 @@ public final class Ls implements FileSystemOperation<String>, CommandFactory {
     }
 
     Directory directory = (Directory) currentDirectory;
-    List<String> names =
-        directory.getChildren().stream()
-            .map(FileSystemComponent::getName)
-            .collect(Collectors.toList());
+    List<String> names = new ArrayList<>(
+      directory.getChildren().stream()
+        .map(FileSystemComponent::getName)
+        .collect(Collectors.toList()));
 
     if ("asc".equals(order)) {
       names.sort(String::compareTo);

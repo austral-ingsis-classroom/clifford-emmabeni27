@@ -6,15 +6,13 @@ public final class File implements FileSystemComponent {
 
   private final String name;
   private FileSystemComponent parent;
-  final String type;
+  private final String type;
 
   public File(String name, String type, FileSystemComponent parent) {
     this.name = name;
     this.type = type;
     this.parent = parent;
   }
-
-  // no necesito el actualDir, lo puedo reconstruir con get parent
 
   @Override
   public String getName() {
@@ -28,7 +26,7 @@ public final class File implements FileSystemComponent {
 
   @Override
   public void setParent(FileSystemComponent newParent) {
-    parent = newParent;
+    this.parent = newParent;
   }
 
   @Override
