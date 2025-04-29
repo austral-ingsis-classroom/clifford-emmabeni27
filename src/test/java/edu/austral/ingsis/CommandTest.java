@@ -1,14 +1,14 @@
-//package edu.austral.ingsis.clifford;
+// package edu.austral.ingsis.clifford;
 //
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 //
-//import java.util.ArrayList;
-//import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 //
-//import static org.junit.jupiter.api.Assertions.*;
+// import static org.junit.jupiter.api.Assertions.*;
 //
-//public class CommandTest {
+// public class CommandTest {
 //  private FileSystemComponent rootDirectory;
 //  private Directory testDirectory;
 //
@@ -178,7 +178,8 @@
 //    Result resultDirNoRecursive = rmDirNoRecursive.execute(testDirectory);
 //
 //    assertTrue(resultDirNoRecursive instanceof Error);
-//    assertEquals("cannot remove 'dirToRemove', is a directory", resultDirNoRecursive.getMessage());
+//    assertEquals("cannot remove 'dirToRemove', is a directory",
+// resultDirNoRecursive.getMessage());
 //
 //    // Probar rm en un directorio con recursivo
 //    Rm rmDirRecursive = new Rm("dirToRemove", true);
@@ -202,4 +203,5 @@
 //    assertTrue(result instanceof Error);
 //    assertEquals("Test error message", result.getMessage());
 //  }
-//}
+// }
+//
