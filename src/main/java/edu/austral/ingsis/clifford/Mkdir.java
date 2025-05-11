@@ -3,7 +3,7 @@ package edu.austral.ingsis.clifford;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Mkdir implements FileSystemOperation<String>, CommandFactory {
+public final class Mkdir implements Operation<String> {
   private final String name;
 
   public Mkdir(String name) {
@@ -11,7 +11,7 @@ public final class Mkdir implements FileSystemOperation<String>, CommandFactory 
   }
 
   @Override
-  public Result execute(FileSystemComponent currentDirectory) {
+  public Result execute(Component currentDirectory) {
     if (!currentDirectory.isDirectory()) {
       return new Error("Not a directory");
     }
@@ -22,24 +22,9 @@ public final class Mkdir implements FileSystemOperation<String>, CommandFactory 
       }
     }
 
-    List<FileSystemComponent> children = new ArrayList<>();
-    FileSystemComponent newDirectory = new Directory(name, "Directory", currentDirectory, children);
+    List<Component> children = new ArrayList<>();
+    Component newDirectory = new Directory(name, "Directory", currentDirectory, children);
     ((Directory) currentDirectory).addChild(newDirectory);
     return new Success("'" + name + "' directory created");
-  }
-
-  @Override
-  public String commandName() {
-    return "mkdir";
-  }
-
-  @Override
-  public FileSystemOperation<String> fromParts(String[] parts) {
-    if (parts.length < 2) {
-      return new ErrorOperation("Directory name required for 'mkdir' command");
-    }
-
-    String dirName = parts[1];
-    return new Mkdir(dirName);
   }
 }

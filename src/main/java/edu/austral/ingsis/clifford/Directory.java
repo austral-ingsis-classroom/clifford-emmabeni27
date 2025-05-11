@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class Directory implements FileSystemComponent {
+public final class Directory implements Component {
 
   private final String name;
   private final String type;
-  private FileSystemComponent parent;
-  private final List<FileSystemComponent> children;
+  private Component parent;
+  private final List<Component> children;
 
-  public Directory(
-      String name, String type, FileSystemComponent parent, List<FileSystemComponent> children) {
+  public Directory(String name, String type, Component parent, List<Component> children) {
     this.name = name;
     this.type = type;
     this.parent = parent;
@@ -30,12 +29,12 @@ public final class Directory implements FileSystemComponent {
   }
 
   @Override
-  public void setParent(FileSystemComponent newParent) {
+  public void setParent(Component newParent) {
     this.parent = newParent;
   }
 
   @Override
-  public FileSystemComponent getParent() {
+  public Component getParent() {
     return parent;
   }
 
@@ -44,16 +43,16 @@ public final class Directory implements FileSystemComponent {
     return true;
   }
 
-  public void addChild(FileSystemComponent child) {
+  public void addChild(Component child) {
     children.add(child);
     child.setParent(this);
   }
 
-  public void removeChild(FileSystemComponent child) {
+  public void removeChild(Component child) {
     children.remove(child);
   }
 
-  public List<FileSystemComponent> getChildren() {
+  public List<Component> getChildren() {
     return Collections.unmodifiableList(new ArrayList<>(children));
   }
 }

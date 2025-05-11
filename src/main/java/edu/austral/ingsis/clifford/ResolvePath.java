@@ -7,7 +7,7 @@ public final class ResolvePath {
   // Private constructor to prevent instantiation
   private ResolvePath() {}
 
-  public static FileSystemComponent resolvePath(String path, FileSystemComponent current) {
+  public static Component resolvePath(String path, Component current) {
     if (path.equals(".")) return current;
     if (path.equals("..")) return current.getParent() != null ? current.getParent() : current;
 
@@ -29,11 +29,11 @@ public final class ResolvePath {
     if (path.isEmpty()) return current;
 
     String[] parts = path.split("/");
-    FileSystemComponent node = current;
+    Component node = current;
 
     for (String part : parts) {
       if (!(node instanceof Directory)) return null;
-      Optional<FileSystemComponent> found =
+      Optional<Component> found =
           ((Directory) node)
               .getChildren().stream().filter(child -> child.getName().equals(part)).findFirst();
 

@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford;
 
-public final class Touch implements FileSystemOperation<String>, CommandFactory {
+public final class Touch implements Operation<String> {
   private final String name;
 
   public Touch(String name) {
@@ -8,7 +8,7 @@ public final class Touch implements FileSystemOperation<String>, CommandFactory 
   }
 
   @Override
-  public Result execute(FileSystemComponent currentDirectory) {
+  public Result execute(Component currentDirectory) {
     if (!currentDirectory.isDirectory()) {
       return new Error("Not a directory");
     }
@@ -19,23 +19,8 @@ public final class Touch implements FileSystemOperation<String>, CommandFactory 
       }
     }
 
-    FileSystemComponent newFile = new File(name, "File", currentDirectory);
+    Component newFile = new File(name, "File", currentDirectory);
     ((Directory) currentDirectory).addChild(newFile);
     return new Success("'" + name + "' file created");
-  }
-
-  @Override
-  public String commandName() {
-    return "touch";
-  }
-
-  @Override
-  public FileSystemOperation<String> fromParts(String[] parts) {
-    if (parts.length < 2) {
-      return new ErrorOperation("File name required for 'touch' command");
-    }
-
-    String fileName = parts[1];
-    return new Touch(fileName);
   }
 }

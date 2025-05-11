@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 
 public class CliTest {
   private Cli cli;
-  private FileSystemComponent rootDirectory;
+  private Component rootDirectory;
 
   @BeforeEach
   public void setUp() {
     // Crear una estructura de directorios básica para las pruebas
-    List<FileSystemComponent> rootChildren = new ArrayList<>();
+    List<Component> rootChildren = new ArrayList<>();
     rootDirectory = new Directory("root", "Directory", null, rootChildren);
     List<CommandFactory> factories = CommandFactoryLoader.load();
     cli = new Cli(rootDirectory, factories);

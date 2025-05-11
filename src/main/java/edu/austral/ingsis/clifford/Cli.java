@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 public final class Cli {
 
-  private FileSystemComponent currentDirectory;
+  private Component currentDirectory;
   private final Map<String, CommandFactory> commands;
 
-  public Cli(FileSystemComponent rootDirectory, List<CommandFactory> factories) {
+  public Cli(Component rootDirectory, List<CommandFactory> factories) {
     this.currentDirectory = rootDirectory;
     this.commands =
         Collections.unmodifiableMap(
@@ -27,24 +27,24 @@ public final class Cli {
       return new Error("No result").getMessage();
     }
 
-    FileSystemOperation<String> operacion = factory.fromParts(parts);
+    Operation<String> operacion = factory.fromParts(parts);
     Result result = operacion.execute(currentDirectory);
 
-    if ("cd".equals(operation)
+    if ("cd".equals(operation) // cd afecta el estado del cli
         && result instanceof Success
         && result.getMessage().startsWith("moved to directory")) {
       String dirName = parts[1];
-      FileSystemComponent newDir = ResolvePath.resolvePath(dirName, currentDirectory);
+      Component newDir = ResolvePath.resolvePath(dirName, currentDirectory);
       if (newDir != null && newDir.isDirectory()) {
         currentDirectory = newDir;
       }
     }
-
+    // REVISAR PQ ESTA APARTE
     return result.getMessage();
   }
 
   // If we need to provide access to the current directory
-  public FileSystemComponent getCurrentDirectory() {
+  public Component getCurrentDirectory() {
     return currentDirectory;
   }
 }

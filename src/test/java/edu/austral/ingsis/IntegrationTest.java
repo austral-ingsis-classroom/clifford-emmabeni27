@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.austral.ingsis.clifford.Cli;
 import edu.austral.ingsis.clifford.CommandFactory;
 import edu.austral.ingsis.clifford.CommandFactoryLoader;
+import edu.austral.ingsis.clifford.Component;
 import edu.austral.ingsis.clifford.Directory;
-import edu.austral.ingsis.clifford.FileSystemComponent;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +18,8 @@ public class IntegrationTest {
   @BeforeEach
   public void setUp() {
     // Crear un sistema de archivos para las pruebas
-    List<FileSystemComponent> rootChildren = new ArrayList<>();
-    FileSystemComponent rootDirectory = new Directory("root", "Directory", null, rootChildren);
+    List<Component> rootChildren = new ArrayList<>();
+    Component rootDirectory = new Directory("root", "Directory", null, rootChildren);
     List<CommandFactory> factories = CommandFactoryLoader.load();
     cli = new Cli(rootDirectory, factories);
   }

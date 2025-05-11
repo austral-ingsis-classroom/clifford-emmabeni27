@@ -11,12 +11,12 @@ public final class CommandFactoryLoader {
   public static List<CommandFactory> load() {
     List<CommandFactory> factories = new ArrayList<>();
 
-    factories.add(new Ls(""));
-    factories.add(new Mkdir(""));
-    factories.add(new Cd(""));
-    factories.add(new Touch(""));
-    factories.add(new Pwd());
-    factories.add(new Rm("", true));
+    factories.add(new LsFactory());
+    factories.add(new MkdirFactory());
+    factories.add(new CdFactory());
+    factories.add(new TouchFactory());
+    factories.add(new PwdFactory());
+    factories.add(new RmFactory());
 
     return Collections.unmodifiableList(factories);
   }

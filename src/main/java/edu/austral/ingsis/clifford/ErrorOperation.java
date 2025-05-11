@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford;
 
-public class ErrorOperation implements FileSystemOperation<String> {
+public class ErrorOperation implements Operation<String> {
   private final String errorMessage;
 
   public ErrorOperation(String errorMessage) {
@@ -8,7 +8,7 @@ public class ErrorOperation implements FileSystemOperation<String> {
   }
 
   @Override
-  public Result execute(FileSystemComponent currentDirectory) {
+  public Result execute(Component currentDirectory) {
     return new Error(errorMessage);
   }
 }
